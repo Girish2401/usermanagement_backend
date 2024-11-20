@@ -9,8 +9,10 @@ const path = require('path');
 
 const port = 3000;
 
+const allowedDomains = ["http://localhost:4200", "https://site-usermanagement-frontend.onrender.com"];
+
 const corsOptions = {
-  origin: "http://localhost:4200",
+  origin: allowedDomains,
   methods: ["GET", "PUT", "POST", "DELETE"],
   optionsSuccessStatus: 200,
 };
@@ -18,6 +20,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cors(corsOptions));
+
+app.get('/', (req, res) => {
+  res.status(200).json({});
+});
 
 app.post("/employee", async (req, res) => {
   let employee = new Employee({ ...req.body });
@@ -102,9 +108,9 @@ async function connect() {
 
 
 // Serve the Angular build files
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'dist')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  });
-}
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, 'dist')));
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+//   });
+// }
